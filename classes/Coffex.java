@@ -1,6 +1,10 @@
+package classes;
+
 import java.io.*;
 
-public class Shell {
+public class Coffex {
+    private static boolean hadError = false;
+
     public static void main(String[] args) {
         try {
             if (args.length > 1) {
@@ -20,6 +24,7 @@ public class Shell {
         String fileContent = getFileContent(path);
         System.out.println(fileContent);
         run(fileContent);
+        if (hadError) System.exit(65);
     }
 
     private static String getFileContent(String path) throws IOException {
@@ -49,12 +54,15 @@ public class Shell {
     }
 
     private static void run(String source) {
-        // Scanner scanner = new Scanner(source);
-        // List<Token> tokens = scanner.scanTokens();
+        Scanner scanner = new Scanner(source);
+    }
 
-        // // For now, just print the tokens.
-        // for (Token token : tokens) {
-        //     System.out.println(token);
-        // }
+    public static void error(int line, String message) {
+        report(line, "", message);
+    }
+
+    private static void report(int line, String where, String message) {
+        System.err.println("[line "+line+"] " + where + ": " + message);
+        hadError = true;
     }
 }
